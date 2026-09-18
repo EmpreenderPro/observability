@@ -1,6 +1,6 @@
 services:
   web:
-    image: jhoninfracontrol/ci-cd-lab:latest
+    image: jhoninfracontrol/observability:latest
     container_name: ci-cd-lab
     ports:
       - "8080:80"
