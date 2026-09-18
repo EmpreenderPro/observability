@@ -1,1 +1,7 @@
-
+services:
+  web:
+    image: jhoninfracontrol/ci-cd-lab:latest
+    container_name: ci-cd-lab
+    ports:
+      - "8080:80"
+    restart: unless-stopped
