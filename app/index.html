@@ -1,11 +1,1358 @@
+```html
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>CI/CD Lab</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AutoMax Peças | Autopeças para seu veículo</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: #f4f6f8;
+            color: #222;
+        }
+
+        /* HEADER */
+
+        header {
+            background: #101820;
+            color: white;
+        }
+
+        .topbar {
+            max-width: 1400px;
+            margin: auto;
+            padding: 18px 25px;
+            display: flex;
+            align-items: center;
+            gap: 35px;
+        }
+
+        .logo {
+            font-size: 26px;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .logo span {
+            color: #ff5a00;
+        }
+
+        .search {
+            flex: 1;
+            display: flex;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .search input {
+            flex: 1;
+            border: none;
+            padding: 15px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        .search button {
+            width: 60px;
+            border: none;
+            background: #ff5a00;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .cart {
+            font-size: 25px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -10px;
+            right: -12px;
+            background: #ff5a00;
+            font-size: 12px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* MENU */
+
+        nav {
+            background: #18242e;
+        }
+
+        nav ul {
+            max-width: 1400px;
+            margin: auto;
+            padding: 0 25px;
+            display: flex;
+            list-style: none;
+            overflow-x: auto;
+        }
+
+        nav li {
+            padding: 15px 20px;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        nav li:hover {
+            background: #ff5a00;
+        }
+
+        /* HERO */
+
+        .hero {
+            max-width: 1400px;
+            margin: 25px auto;
+            padding: 50px;
+            border-radius: 12px;
+            background: linear-gradient(110deg, #17232d, #293946);
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: 42px;
+            max-width: 650px;
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            max-width: 600px;
+            color: #d5dce1;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        .hero button {
+            padding: 14px 25px;
+            border: none;
+            border-radius: 7px;
+            background: #ff5a00;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* VEHICLE SEARCH */
+
+        .vehicle-box {
+            max-width: 1400px;
+            margin: 25px auto;
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 3px 12px rgba(0,0,0,.08);
+        }
+
+        .vehicle-box h2 {
+            margin-bottom: 18px;
+        }
+
+        .vehicle-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+
+        select {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            background: white;
+        }
+
+        .vehicle-button {
+            background: #101820;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* CONTENT */
+
+        .container {
+            max-width: 1400px;
+            margin: 35px auto;
+            padding: 0 25px;
+        }
+
+        .section-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .section-title h2 {
+            font-size: 26px;
+        }
+
+        /* CATEGORIES */
+
+        .categories {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 15px;
+        }
+
+        .category {
+            background: white;
+            padding: 25px 15px;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: .2s;
+            border: 1px solid #eee;
+        }
+
+        .category:hover {
+            transform: translateY(-4px);
+            border-color: #ff5a00;
+        }
+
+        .category-icon {
+            font-size: 38px;
+            margin-bottom: 12px;
+        }
+
+        .category strong {
+            display: block;
+        }
+
+        .category small {
+            color: #777;
+        }
+
+        /* FILTER */
+
+        .products-area {
+            display: grid;
+            grid-template-columns: 230px 1fr;
+            gap: 25px;
+        }
+
+        .filters {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            height: fit-content;
+        }
+
+        .filters h3 {
+            margin-bottom: 15px;
+        }
+
+        .filter-group {
+            margin-bottom: 25px;
+        }
+
+        .filter-group label {
+            display: block;
+            margin: 10px 0;
+            font-size: 14px;
+        }
+
+        /* PRODUCTS */
+
+        .products {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+        }
+
+        .product {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid #eee;
+            position: relative;
+            transition: .2s;
+        }
+
+        .product:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 5px 20px rgba(0,0,0,.1);
+        }
+
+        .product-image {
+            height: 190px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #eef1f3;
+            font-size: 70px;
+        }
+
+        .discount {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: #e63946;
+            color: white;
+            padding: 5px 8px;
+            border-radius: 5px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .product-info {
+            padding: 15px;
+        }
+
+        .product-category {
+            font-size: 12px;
+            color: #777;
+        }
+
+        .product h3 {
+            margin: 8px 0;
+            font-size: 16px;
+            min-height: 38px;
+        }
+
+        .stars {
+            color: #f4a261;
+            margin-bottom: 8px;
+        }
+
+        .old-price {
+            text-decoration: line-through;
+            color: #999;
+            font-size: 13px;
+        }
+
+        .price {
+            font-size: 21px;
+            font-weight: bold;
+            margin: 4px 0;
+        }
+
+        .installments {
+            color: #2a9d8f;
+            font-size: 12px;
+        }
+
+        .add-cart {
+            width: 100%;
+            margin-top: 12px;
+            padding: 11px;
+            background: #ff5a00;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* BRANDS */
+
+        .brands {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 15px;
+        }
+
+        .brand {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+            border: 1px solid #eee;
+        }
+
+        /* FEATURES */
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin: 40px 0;
+        }
+
+        .feature {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+        }
+
+        .feature-icon {
+            font-size: 30px;
+            margin-bottom: 10px;
+        }
+
+        .feature p {
+            margin-top: 8px;
+            color: #777;
+            font-size: 14px;
+        }
+
+        /* FOOTER */
+
+        footer {
+            background: #101820;
+            color: white;
+            margin-top: 50px;
+        }
+
+        .footer-grid {
+            max-width: 1400px;
+            margin: auto;
+            padding: 45px 25px;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 40px;
+        }
+
+        footer h3 {
+            margin-bottom: 15px;
+        }
+
+        footer p,
+        footer li {
+            color: #bfc7cc;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        footer ul {
+            list-style: none;
+        }
+
+        .copyright {
+            text-align: center;
+            padding: 18px;
+            border-top: 1px solid #29343d;
+            color: #aaa;
+            font-size: 13px;
+        }
+
+        /* RESPONSIVO */
+
+        @media(max-width: 1100px) {
+
+            .categories {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .products {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .brands {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+        }
+
+        @media(max-width: 800px) {
+
+            .topbar {
+                flex-wrap: wrap;
+            }
+
+            .search {
+                order: 3;
+                flex-basis: 100%;
+            }
+
+            .vehicle-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .products-area {
+                grid-template-columns: 1fr;
+            }
+
+            .products {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .features {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+        }
+
+        @media(max-width: 550px) {
+
+            .hero {
+                margin: 15px;
+                padding: 30px 20px;
+            }
+
+            .hero h1 {
+                font-size: 30px;
+            }
+
+            .container,
+            .vehicle-box {
+                margin-left: 15px;
+                margin-right: 15px;
+            }
+
+            .categories {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .products {
+                grid-template-columns: 1fr;
+            }
+
+            .vehicle-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .features {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .brands {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+    </style>
 </head>
+
 <body>
-    <h1>Minha primeira aplicação CI/CD 🚀</h1>
-    <p>Versão 1</p>
+
+<header>
+
+    <div class="topbar">
+
+        <div class="logo">
+            Auto<span>Max</span>
+        </div>
+
+        <div class="search">
+            <input
+                id="searchInput"
+                type="text"
+                placeholder="Busque por peça, código, marca ou veículo..."
+            >
+            <button onclick="searchProducts()">🔎</button>
+        </div>
+
+        <div class="cart">
+            🛒
+            <span class="cart-count" id="cartCount">0</span>
+        </div>
+
+    </div>
+
+    <nav>
+        <ul>
+            <li>Início</li>
+            <li>Peças</li>
+            <li>Ofertas</li>
+            <li>Por veículo</li>
+            <li>Marcas</li>
+            <li>Acessórios</li>
+            <li>Contato</li>
+        </ul>
+    </nav>
+
+</header>
+
+
+<section class="hero">
+
+    <h1>
+        Encontre a peça certa para o seu carro
+    </h1>
+
+    <p>
+        Milhares de peças automotivas, acessórios e componentes
+        classificados por categoria, marca e modelo do veículo.
+    </p>
+
+    <button onclick="document.getElementById('products').scrollIntoView()">
+        VER PRODUTOS
+    </button>
+
+</section>
+
+
+<section class="vehicle-box">
+
+    <h2>🔧 Encontre peças para seu veículo</h2>
+
+    <div class="vehicle-grid">
+
+        <select id="brand">
+            <option value="">Marca</option>
+            <option>Volkswagen</option>
+            <option>Chevrolet</option>
+            <option>Fiat</option>
+            <option>Toyota</option>
+            <option>Honda</option>
+            <option>Ford</option>
+            <option>Hyundai</option>
+            <option>Renault</option>
+        </select>
+
+        <select id="model">
+            <option value="">Modelo</option>
+            <option>Gol</option>
+            <option>Onix</option>
+            <option>Uno</option>
+            <option>Corolla</option>
+            <option>Civic</option>
+            <option>Ka</option>
+            <option>HB20</option>
+            <option>Sandero</option>
+        </select>
+
+        <select>
+            <option>Ano</option>
+            <option>2026</option>
+            <option>2025</option>
+            <option>2024</option>
+            <option>2023</option>
+            <option>2022</option>
+            <option>2021</option>
+            <option>2020</option>
+        </select>
+
+        <button class="vehicle-button" onclick="filterVehicle()">
+            ENCONTRAR PEÇAS
+        </button>
+
+    </div>
+
+</section>
+
+
+<div class="container">
+
+    <div class="section-title">
+        <h2>Categorias</h2>
+    </div>
+
+    <div class="categories">
+
+        <div class="category">
+            <div class="category-icon">🛞</div>
+            <strong>Suspensão</strong>
+            <small>1.240 produtos</small>
+        </div>
+
+        <div class="category">
+            <div class="category-icon">🛑</div>
+            <strong>Freios</strong>
+            <small>890 produtos</small>
+        </div>
+
+        <div class="category">
+            <div class="category-icon">🔋</div>
+            <strong>Elétrica</strong>
+            <small>760 produtos</small>
+        </div>
+
+        <div class="category">
+            <div class="category-icon">⚙️</div>
+            <strong>Motor</strong>
+            <small>1.520 produtos</small>
+        </div>
+
+        <div class="category">
+            <div class="category-icon">💡</div>
+            <strong>Iluminação</strong>
+            <small>630 produtos</small>
+        </div>
+
+        <div class="category">
+            <div class="category-icon">🧰</div>
+            <strong>Acessórios</strong>
+            <small>2.100 produtos</small>
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="container" id="products">
+
+    <div class="section-title">
+        <h2>Produtos em destaque</h2>
+        <span>Mais vendidos</span>
+    </div>
+
+    <div class="products-area">
+
+        <aside class="filters">
+
+            <h3>Filtros</h3>
+
+            <div class="filter-group">
+
+                <strong>Categoria</strong>
+
+                <label>
+                    <input type="checkbox"> Motor
+                </label>
+
+                <label>
+                    <input type="checkbox"> Freios
+                </label>
+
+                <label>
+                    <input type="checkbox"> Suspensão
+                </label>
+
+                <label>
+                    <input type="checkbox"> Elétrica
+                </label>
+
+            </div>
+
+            <div class="filter-group">
+
+                <strong>Marca</strong>
+
+                <label>
+                    <input type="checkbox"> Bosch
+                </label>
+
+                <label>
+                    <input type="checkbox"> Cofap
+                </label>
+
+                <label>
+                    <input type="checkbox"> Nakata
+                </label>
+
+                <label>
+                    <input type="checkbox"> Magneti Marelli
+                </label>
+
+            </div>
+
+        </aside>
+
+
+        <section class="products">
+
+            <article class="product" data-name="pastilha freio bosch">
+
+                <div class="discount">-15%</div>
+
+                <div class="product-image">
+                    🛑
+                </div>
+
+                <div class="product-info">
+
+                    <div class="product-category">
+                        Freios
+                    </div>
+
+                    <h3>
+                        Pastilha de Freio Bosch Dianteira
+                    </h3>
+
+                    <div class="stars">
+                        ★★★★★
+                    </div>
+
+                    <div class="old-price">
+                        R$ 189,90
+                    </div>
+
+                    <div class="price">
+                        R$ 161,42
+                    </div>
+
+                    <div class="installments">
+                        3x sem juros
+                    </div>
+
+                    <button
+                        class="add-cart"
+                        onclick="addCart()">
+                        ADICIONAR AO CARRINHO
+                    </button>
+
+                </div>
+
+            </article>
+
+
+            <article class="product" data-name="amortecedor cofap">
+
+                <div class="discount">-10%</div>
+
+                <div class="product-image">
+                    🛞
+                </div>
+
+                <div class="product-info">
+
+                    <div class="product-category">
+                        Suspensão
+                    </div>
+
+                    <h3>
+                        Amortecedor Dianteiro Cofap
+                    </h3>
+
+                    <div class="stars">
+                        ★★★★★
+                    </div>
+
+                    <div class="old-price">
+                        R$ 520,00
+                    </div>
+
+                    <div class="price">
+                        R$ 468,00
+                    </div>
+
+                    <div class="installments">
+                        6x sem juros
+                    </div>
+
+                    <button
+                        class="add-cart"
+                        onclick="addCart()">
+                        ADICIONAR AO CARRINHO
+                    </button>
+
+                </div>
+
+            </article>
+
+
+            <article class="product" data-name="bateria moura">
+
+                <div class="product-image">
+                    🔋
+                </div>
+
+                <div class="product-info">
+
+                    <div class="product-category">
+                        Elétrica
+                    </div>
+
+                    <h3>
+                        Bateria Moura 60Ah
+                    </h3>
+
+                    <div class="stars">
+                        ★★★★★
+                    </div>
+
+                    <div class="price">
+                        R$ 489,90
+                    </div>
+
+                    <div class="installments">
+                        10x sem juros
+                    </div>
+
+                    <button
+                        class="add-cart"
+                        onclick="addCart()">
+                        ADICIONAR AO CARRINHO
+                    </button>
+
+                </div>
+
+            </article>
+
+
+            <article class="product" data-name="filtro oleo mann">
+
+                <div class="discount">-20%</div>
+
+                <div class="product-image">
+                    🧰
+                </div>
+
+                <div class="product-info">
+
+                    <div class="product-category">
+                        Motor
+                    </div>
+
+                    <h3>
+                        Filtro de Óleo Mann
+                    </h3>
+
+                    <div class="stars">
+                        ★★★★★
+                    </div>
+
+                    <div class="old-price">
+                        R$ 45,90
+                    </div>
+
+                    <div class="price">
+                        R$ 36,72
+                    </div>
+
+                    <div class="installments">
+                        2x sem juros
+                    </div>
+
+                    <button
+                        class="add-cart"
+                        onclick="addCart()">
+                        ADICIONAR AO CARRINHO
+                    </button>
+
+                </div>
+
+            </article>
+
+
+            <article class="product" data-name="vela ignicao ngk">
+
+                <div class="product-image">
+                    ⚡
+                </div>
+
+                <div class="product-info">
+
+                    <div class="product-category">
+                        Ignição
+                    </div>
+
+                    <h3>
+                        Jogo de Velas NGK
+                    </h3>
+
+                    <div class="stars">
+                        ★★★★★
+                    </div>
+
+                    <div class="price">
+                        R$ 89,90
+                    </div>
+
+                    <div class="installments">
+                        3x sem juros
+                    </div>
+
+                    <button
+                        class="add-cart"
+                        onclick="addCart()">
+                        ADICIONAR AO CARRINHO
+                    </button>
+
+                </div>
+
+            </article>
+
+
+            <article class="product" data-name="correia dentada gates">
+
+                <div class="product-image">
+                    ⚙️
+                </div>
+
+                <div class="product-info">
+
+                    <div class="product-category">
+                        Motor
+                    </div>
+
+                    <h3>
+                        Correia Dentada Gates
+                    </h3>
+
+                    <div class="stars">
+                        ★★★★★
+                    </div>
+
+                    <div class="price">
+                        R$ 139,90
+                    </div>
+
+                    <div class="installments">
+                        4x sem juros
+                    </div>
+
+                    <button
+                        class="add-cart"
+                        onclick="addCart()">
+                        ADICIONAR AO CARRINHO
+                    </button>
+
+                </div>
+
+            </article>
+
+
+            <article class="product" data-name="farol led">
+
+                <div class="discount">-12%</div>
+
+                <div class="product-image">
+                    💡
+                </div>
+
+                <div class="product-info">
+
+                    <div class="product-category">
+                        Iluminação
+                    </div>
+
+                    <h3>
+                        Kit Lâmpadas LED Automotivas
+                    </h3>
+
+                    <div class="stars">
+                        ★★★★★
+                    </div>
+
+                    <div class="old-price">
+                        R$ 199,90
+                    </div>
+
+                    <div class="price">
+                        R$ 175,91
+                    </div>
+
+                    <div class="installments">
+                        5x sem juros
+                    </div>
+
+                    <button
+                        class="add-cart"
+                        onclick="addCart()">
+                        ADICIONAR AO CARRINHO
+                    </button>
+
+                </div>
+
+            </article>
+
+
+            <article class="product" data-name="oleo motor mobil">
+
+                <div class="product-image">
+                    🛢️
+                </div>
+
+                <div class="product-info">
+
+                    <div class="product-category">
+                        Lubrificantes
+                    </div>
+
+                    <h3>
+                        Óleo Motor Sintético 5W30
+                    </h3>
+
+                    <div class="stars">
+                        ★★★★★
+                    </div>
+
+                    <div class="price">
+                        R$ 42,90
+                    </div>
+
+                    <div class="installments">
+                        2x sem juros
+                    </div>
+
+                    <button
+                        class="add-cart"
+                        onclick="addCart()">
+                        ADICIONAR AO CARRINHO
+                    </button>
+
+                </div>
+
+            </article>
+
+        </section>
+
+    </div>
+
+</div>
+
+
+<div class="container">
+
+    <div class="section-title">
+        <h2>Principais marcas</h2>
+    </div>
+
+    <div class="brands">
+
+        <div class="brand">Bosch</div>
+        <div class="brand">Cofap</div>
+        <div class="brand">Nakata</div>
+        <div class="brand">NGK</div>
+        <div class="brand">Moura</div>
+        <div class="brand">Magneti Marelli</div>
+
+    </div>
+
+</div>
+
+
+<div class="container">
+
+    <div class="features">
+
+        <div class="feature">
+
+            <div class="feature-icon">
+                🚚
+            </div>
+
+            <strong>Entrega rápida</strong>
+
+            <p>
+                Enviamos para todo o Brasil.
+            </p>
+
+        </div>
+
+
+        <div class="feature">
+
+            <div class="feature-icon">
+                🔒
+            </div>
+
+            <strong>Compra segura</strong>
+
+            <p>
+                Seus dados protegidos.
+            </p>
+
+        </div>
+
+
+        <div class="feature">
+
+            <div class="feature-icon">
+                🛠️
+            </div>
+
+            <strong>Peças compatíveis</strong>
+
+            <p>
+                Consulte seu veículo antes da compra.
+            </p>
+
+        </div>
+
+
+        <div class="feature">
+
+            <div class="feature-icon">
+                💬
+            </div>
+
+            <strong>Atendimento</strong>
+
+            <p>
+                Tire suas dúvidas com nossa equipe.
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<footer>
+
+    <div class="footer-grid">
+
+        <div>
+
+            <h3>AutoMax</h3>
+
+            <p>
+                Catálogo de peças e acessórios automotivos
+                para diversos veículos e aplicações.
+            </p>
+
+        </div>
+
+
+        <div>
+
+            <h3>Atendimento</h3>
+
+            <ul>
+                <li>Central de atendimento</li>
+                <li>WhatsApp</li>
+                <li>Trocas e devoluções</li>
+                <li>Rastrear pedido</li>
+            </ul>
+
+        </div>
+
+
+        <div>
+
+            <h3>Institucional</h3>
+
+            <ul>
+                <li>Sobre nós</li>
+                <li>Política de privacidade</li>
+                <li>Termos de uso</li>
+                <li>Contato</li>
+            </ul>
+
+        </div>
+
+
+        <div>
+
+            <h3>Pagamento</h3>
+
+            <p>
+                Pix<br>
+                Cartão de crédito<br>
+                Boleto
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="copyright">
+
+        © 2026 AutoMax Peças — Todos os direitos reservados.
+
+    </div>
+
+</footer>
+
+
+<script>
+
+let cart = 0;
+
+
+/* CARRINHO */
+
+function addCart() {
+
+    cart++;
+
+    document.getElementById("cartCount").textContent = cart;
+
+}
+
+
+/* BUSCA */
+
+function searchProducts() {
+
+    const search =
+        document
+        .getElementById("searchInput")
+        .value
+        .toLowerCase();
+
+    const products =
+        document.querySelectorAll(".product");
+
+    products.forEach(product => {
+
+        const name =
+            product.dataset.name;
+
+        if (name.includes(search)) {
+
+            product.style.display = "";
+
+        } else {
+
+            product.style.display = "none";
+
+        }
+
+    });
+
+}
+
+
+/* BUSCA POR VEÍCULO */
+
+function filterVehicle() {
+
+    const brand =
+        document.getElementById("brand").value;
+
+    const model =
+        document.getElementById("model").value;
+
+    if (!brand && !model) {
+
+        alert("Selecione a marca ou modelo do veículo.");
+
+        return;
+
+    }
+
+    alert(
+        "Buscando peças compatíveis com " +
+        brand +
+        " " +
+        model
+    );
+
+}
+
+
+/* ENTER NA BUSCA */
+
+document
+.getElementById("searchInput")
+.addEventListener("keypress", function(event) {
+
+    if (event.key === "Enter") {
+
+        searchProducts();
+
+    }
+
+});
+
+</script>
+
 </body>
 </html>
+```
