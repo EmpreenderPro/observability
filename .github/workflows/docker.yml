@@ -29,3 +29,19 @@ jobs:
         run: |
           docker push \
             ${{ secrets.DOCKERHUB_USERNAME }}/observability:latest
+      
+      - name: Puxa a Imagem
+        run: |
+          docker pull \
+            ${{ secrets.DOCKERHUB_USERNAME }}/observability:latest
+             .
+
+      - name: Subir e Execultar o novo Container
+        run: |
+          docker compose up -d \
+            ${{ secrets.DOCKERHUB_USERNAME }}/observability:latest
+             .
+      - name: Limpar Imagem Antiga
+        run: |
+          docker image prune -f \
+            ${{ secrets.DOCKERHUB_USERNAME }}/observability:latest
