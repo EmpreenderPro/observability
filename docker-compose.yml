@@ -1,7 +1,7 @@
 services:
   web:
     image: jhoninfracontrol/observability:latest
-    container_name: autoJS
+    container_name: auto
     ports:
       - "8080:80"
     restart: unless-stopped
